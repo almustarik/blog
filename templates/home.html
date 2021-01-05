@@ -7,10 +7,11 @@
     <li>
     <a href="{% url 'article-detail' post.pk %}" >
         {{ post.title }} </a>
+        - <a href="{% url 'category' post.category|slugify %}"> {{ post.category }} </a>
         - {{ post.author.first_name }}
         {{ post.author.last_name }} -
         {{ post.post_date }}  <small>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.id == post.author.id %}
             <a href="{% url 'update-post' post.pk %}">(Edit)</a> </small>
             <small> <a href="{% url 'delete-post' post.pk %}" style="color: red">(Delete)</a>
         {% endif %}
@@ -20,5 +21,7 @@
     </li>
 {% endfor %}
 </ul>
+
+
 
 {% endblock %}
