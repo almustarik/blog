@@ -18,6 +18,12 @@
     <br/>
     <hr>
     <br/>
+    {% if post.header_image %}
+        <img src="{{ post.header_image.url }}" height="300" width="300">
+{#    {% else %}#}
+{#        <h4><strong>No Images</strong></h4>#}
+    {% endif %}
+    <br><br>
     {{ post.body|safe }}
 
     <br/><br/>
