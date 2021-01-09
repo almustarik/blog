@@ -3,12 +3,30 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.urls import reverse_lazy
-from members.forms import SignUpForm, EditProfileForm, PasswordChangingForm
-from django.views.generic import DetailView
+from members.forms import SignUpForm, EditProfileForm, PasswordChangingForm, ProfilePageForm
+from django.views.generic import DetailView, CreateView
 from myblog.models import UserProfile
 
 
 # Create your views here.
+class CreateProfilePageView(CreateView):
+    model = UserProfile
+    form_class = ProfilePageForm
+    template_name = "registration/create_user_profile_page.html"
+    # fields = '__all__'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class EditProfilePageView(generic.UpdateView):
+    model = UserProfile
+    template_name = 'registration/edit_profile_page.html'
+    fields = ['bio', 'profile_pic', 'website_url', 'facebook_url', 'instagram_url', 'linkedin_url', 'github_url']
+    success_url = reverse_lazy('home')
+
+
 class ShowProfilePageView(DetailView):
     model = UserProfile
     template_name = 'registration/user_profile.html'
